@@ -3,6 +3,7 @@ package com.baislsl.course;
 import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -16,11 +17,15 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class GridActivity extends AppCompatActivity {
 
     private static final String KEY_TRANSITION_EFFECT = "transition_effect";
 
-    private JazzyGridView mGrid;
+    @BindView(android.R.id.list) protected JazzyGridView mGrid;
+    @BindView(R.id.toolbar) protected Toolbar toolbar;
     private Map<String, Integer> mEffectMap;
     private int mCurrentTransitionEffect = JazzyHelper.HELIX;
 
@@ -28,13 +33,20 @@ public class GridActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_grid);
-        mGrid = (JazzyGridView) findViewById(android.R.id.list);
+        ButterKnife.bind(this);
+
+        setToolBar();
         mGrid.setAdapter(new ListAdapter(this, R.layout.grid_item));
 
         if (savedInstanceState != null) {
             mCurrentTransitionEffect = savedInstanceState.getInt(KEY_TRANSITION_EFFECT, JazzyHelper.HELIX);
             setupJazziness(mCurrentTransitionEffect);
         }
+    }
+
+    private void setToolBar(){
+        toolbar.setBackgroundColor(getResources().getColor(R.color.toolbar_background));
+        toolbar.setNavigationIcon(getResources().getDrawable(R.drawable.sublime_text));
     }
 
     @Override

@@ -1,0 +1,18 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/backup"
+        android:icon="@drawable/sublime_text"
+        android:title="Backup"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/delete"
+        android:icon="@drawable/sublime_text"
+        android:title="Delete"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/settings"
+        android:icon="@drawable/sublime_text"
+        android:title="Settings"
+        app:showAsAction="never" />
+</menu>

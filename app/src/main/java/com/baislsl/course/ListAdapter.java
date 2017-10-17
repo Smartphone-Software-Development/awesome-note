@@ -35,7 +35,6 @@ class ListAdapter extends ArrayAdapter<String> {
 
         holder.text.setBackgroundColor(res.getColor(R.color.colorPrimaryDark));
 
-//        holder.text.setBackgroundColor(res.getColor(Utils.getBackgroundColorRes(position, itemLayoutRes)));
         holder.text.setText(ListModel.getModelItem(position));
 
         return convertView;

@@ -1,4 +1,4 @@
-package com.baislsl.course;
+package com.bfd.note;
 
 import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;

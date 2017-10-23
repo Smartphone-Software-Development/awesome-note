@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.baislsl.course;
+package com.bfd.note;
 
 final class ListModel {
 

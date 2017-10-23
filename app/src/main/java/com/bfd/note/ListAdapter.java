@@ -1,9 +1,8 @@
-package com.baislsl.course;
+package com.bfd.note;
 
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
-import android.preference.EditTextPreference;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;

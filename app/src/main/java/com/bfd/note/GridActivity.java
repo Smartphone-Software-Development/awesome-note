@@ -1,4 +1,4 @@
-package com.baislsl.course;
+package com.bfd.note;
 
 import android.content.Intent;
 import android.support.v4.view.GravityCompat;

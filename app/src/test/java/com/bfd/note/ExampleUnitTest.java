@@ -1,4 +1,4 @@
-package com.baislsl.course;
+package com.bfd.note;
 
 import org.junit.Test;
 

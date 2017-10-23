@@ -1,4 +1,4 @@
-package com.baislsl.course;
+package com.bfd.note;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;

@@ -1,4 +1,4 @@
-package com.baislsl.course;
+package com.bfd.note;
 
 import android.content.res.Configuration;
 import android.os.Bundle;

@@ -31,6 +31,13 @@ class ListAdapter extends ArrayAdapter<String> {
             convertView = inflater.inflate(itemLayoutRes, null);
             holder = new ViewHolder(convertView);
             convertView.setTag(holder);
+            convertView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(getContext(), EditorActivity.class);
+                    getContext().startActivity(intent);
+                }
+            });
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
@@ -39,12 +46,7 @@ class ListAdapter extends ArrayAdapter<String> {
 
         holder.text.setText(ListModel.getModelItem(position));
 
-        convertView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getContext(), EditorActivity.class);
-            }
-        });
+
 
         return convertView;
     }

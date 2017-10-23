@@ -1,1 +1,1 @@
-include ':app', ':JazzyListView'
+include ':app'

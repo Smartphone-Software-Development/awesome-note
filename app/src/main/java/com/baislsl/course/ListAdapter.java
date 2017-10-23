@@ -1,7 +1,9 @@
 package com.baislsl.course;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Resources;
+import android.preference.EditTextPreference;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,6 +38,13 @@ class ListAdapter extends ArrayAdapter<String> {
         holder.text.setBackgroundColor(res.getColor(R.color.colorPrimaryDark));
 
         holder.text.setText(ListModel.getModelItem(position));
+
+        convertView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getContext(), EditorActivity.class);
+            }
+        });
 
         return convertView;
     }

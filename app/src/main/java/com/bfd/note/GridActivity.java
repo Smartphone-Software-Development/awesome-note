@@ -11,6 +11,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import com.bfd.note.store.Container;
+import com.bfd.note.store.ContainerImpl;
 import com.twotoasters.jazzylistview.JazzyGridView;
 import com.twotoasters.jazzylistview.JazzyHelper;
 
@@ -20,6 +22,7 @@ import butterknife.ButterKnife;
 public class GridActivity extends AppCompatActivity {
 
     private static final String KEY_TRANSITION_EFFECT = "transition_effect";
+    private Container container;
 
     @BindView(android.R.id.list) protected JazzyGridView mGrid;
     @BindView(R.id.toolbar) protected Toolbar toolbar;
@@ -33,14 +36,20 @@ public class GridActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_grid);
         ButterKnife.bind(this);
+        container = createConnection();
 
         setToolBar();
-        mGrid.setAdapter(new ListAdapter(this, R.layout.grid_item));
+        mGrid.setAdapter(new ListAdapter(this, R.layout.grid_item, container));
 
         if (savedInstanceState != null) {
             mCurrentTransitionEffect = savedInstanceState.getInt(KEY_TRANSITION_EFFECT, DEFAULT_TRANSITION_EFFECT);
             setupJazziness(mCurrentTransitionEffect);
         }
+    }
+
+    private Container createConnection(){
+        // TODO:
+        return new ContainerImpl();
     }
 
     private void setToolBar(){
@@ -54,8 +63,6 @@ public class GridActivity extends AppCompatActivity {
             }
         });
     }
-
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

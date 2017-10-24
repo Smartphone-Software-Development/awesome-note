@@ -9,16 +9,20 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+import com.bfd.note.store.Container;
+
 class ListAdapter extends ArrayAdapter<String> {
 
     private final LayoutInflater inflater;
     private final Resources res;
     private final int itemLayoutRes;
+    private final Container container;
 
-    public ListAdapter(Context context, int itemLayoutRes) {
-        super(context, itemLayoutRes, R.id.text, ListModel.getModel());
+    public ListAdapter(Context context, int itemLayoutRes, Container container) {
+        super(context, itemLayoutRes, R.id.text, container.allNoteContents());
         inflater = LayoutInflater.from(context);
         res = context.getResources();
+        this.container = container;
         this.itemLayoutRes = itemLayoutRes;
     }
 
@@ -43,7 +47,7 @@ class ListAdapter extends ArrayAdapter<String> {
 
         holder.text.setBackgroundColor(res.getColor(R.color.colorPrimaryDark));
 
-        holder.text.setText(ListModel.getModelItem(position));
+        holder.text.setText(container.getNoteItem(position).getContent());
 
 
 

@@ -1,4 +1,4 @@
-package com.bfd.note;
+package com.bfd.note.util;
 
 public class Note {
     private String content;

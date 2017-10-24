@@ -1,6 +1,6 @@
 package com.bfd.note.store;
 
-import com.bfd.note.Note;
+import com.bfd.note.util.Note;
 
 public class ContainerImpl implements Container {
 

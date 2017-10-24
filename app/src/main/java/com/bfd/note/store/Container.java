@@ -15,6 +15,8 @@ public interface Container {
 
     boolean resetNote(int index, Note note);
 
+    boolean resetNote(int index, String content);
+
     String[] allNoteContents();
 
 }

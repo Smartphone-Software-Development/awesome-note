@@ -19,14 +19,18 @@ import com.twotoasters.jazzylistview.JazzyHelper;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class GridActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity {
 
     private static final String KEY_TRANSITION_EFFECT = "transition_effect";
+    public static final int EDIT_RESULT = 1;
     private Container container;
 
-    @BindView(android.R.id.list) protected JazzyGridView mGrid;
-    @BindView(R.id.toolbar) protected Toolbar toolbar;
-    @BindView(R.id.drawer_layout) protected DrawerLayout mDrawLayout;
+    @BindView(android.R.id.list)
+    protected JazzyGridView mGrid;
+    @BindView(R.id.toolbar)
+    protected Toolbar toolbar;
+    @BindView(R.id.drawer_layout)
+    protected DrawerLayout mDrawLayout;
 
     private static final int DEFAULT_TRANSITION_EFFECT = JazzyHelper.HELIX;
     private int mCurrentTransitionEffect = DEFAULT_TRANSITION_EFFECT;
@@ -47,12 +51,12 @@ public class GridActivity extends AppCompatActivity {
         }
     }
 
-    private Container createConnection(){
+    private Container createConnection() {
         // TODO:
         return new ContainerImpl();
     }
 
-    private void setToolBar(){
+    private void setToolBar() {
         setSupportActionBar(toolbar);
         toolbar.setBackgroundColor(getResources().getColor(R.color.toolbar_background));
         toolbar.setNavigationIcon(getResources().getDrawable(R.drawable.sublime_text2));
@@ -75,9 +79,9 @@ public class GridActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         // TODO:
         Toast.makeText(this, Integer.toString(item.getItemId()), Toast.LENGTH_SHORT).show();
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
             case R.id.settings:
-                Intent intent = new Intent(GridActivity.this, SettingsActivity.class);
+                Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
                 startActivity(intent);
 
         }
@@ -93,5 +97,20 @@ public class GridActivity extends AppCompatActivity {
     private void setupJazziness(int effect) {
         mCurrentTransitionEffect = effect;
         mGrid.setTransitionEffect(mCurrentTransitionEffect);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode) {
+            case EDIT_RESULT:
+                if (resultCode == RESULT_OK) {
+                    int index = data.getIntExtra(EditorActivity.RESULT_INDEX, -1);
+                    String content = data.getStringExtra(EditorActivity.RESULT_CONTENT);
+                    container.resetNote(index, content);
+                }
+
+            default:
+        }
     }
 }

@@ -42,6 +42,12 @@ public class ContainerImpl implements Container {
     }
 
     @Override
+    public boolean resetNote(int index, String content) {
+        testContent[index].setContent(content);
+        return false;
+    }
+
+    @Override
     public String[] allNoteContents() {
         String[] ans = new String[getNoteNumber()];
         for(int i= 0;i<ans.length;i++){

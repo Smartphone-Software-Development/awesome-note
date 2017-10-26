@@ -1,9 +1,9 @@
 package com.bfd.note;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,10 +11,12 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.bfd.note.store.Container;
+import com.bfd.note.util.Note;
 
 class ListAdapter extends ArrayAdapter<String> {
-    public final static String EDIT_CONTENT = "edit content";
-    public final static String EDIT_INDEX = "edit index";
+    private static final String TAG = "ListAdapter";
+    public final static String EDIT_CONTENT = "edit_content";
+    public final static String EDIT_ID = "edit_index";
     private final LayoutInflater inflater;
     private final Resources res;
     private final int itemLayoutRes;
@@ -41,9 +43,13 @@ class ListAdapter extends ArrayAdapter<String> {
             convertView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(parentActivity, EditorActivity.class);
-                    intent.putExtra(EDIT_CONTENT, container.getNoteItem(position).getContent())
-                            .putExtra(EDIT_INDEX, position);
+                    Note note = container.getAllNotes().get(position);
+
+                    Intent intent = new Intent(parentActivity, EditorActivity.class)
+                            .putExtra(EDIT_CONTENT, note.getContent())
+                            .putExtra(EDIT_ID, note.getId());
+
+                    Log.i(TAG, "onClick: note id = " + note.getId());
                     parentActivity.startActivityForResult(intent, MainActivity.EDIT_RESULT);
                 }
             });
@@ -51,12 +57,9 @@ class ListAdapter extends ArrayAdapter<String> {
             holder = (ViewHolder) convertView.getTag();
         }
 
+        // TODO: change position ?
         holder.text.setBackgroundColor(res.getColor(R.color.colorPrimaryDark));
-
-        holder.text.setText(container.getNoteItem(position).getContent());
-
-
-
+        holder.text.setText(container.getAllNotes().get(position).getContent());
         return convertView;
     }
 

@@ -1,58 +1,70 @@
 package com.bfd.note.store;
 
+import android.util.Log;
+
 import com.bfd.note.util.Note;
 
-public class ContainerImpl implements Container {
+import org.litepal.crud.DataSupport;
 
-    // TODO
-    private Note[] testContent = {
-            new Note("one"),
-            new Note("two"),
-            new Note("three")
-    };
+import java.util.List;
+
+/**
+ * implement with LitePal
+ */
+public class ContainerImpl implements Container {
+    private static final String TAG = "ContainerImpl";
+
+    public ContainerImpl() {
+    }
 
     @Override
     public int getNoteNumber() {
-        return testContent.length;
+        return DataSupport.count(Note.class);
     }
 
     @Override
-    public Note[] getAllNotes() {
-        return testContent;
+    public List<Note> getAllNotes() {
+        return DataSupport.findAll(Note.class);
     }
 
     @Override
-    public Note getNoteItem(int index) {
-        return testContent[index];
+    public Note getNoteItem(long id) {
+        return DataSupport.find(Note.class, id);
     }
 
     @Override
     public boolean addNote(Note data) {
-        return false;
+        return data.save();
     }
 
     @Override
-    public boolean moveNote(int index) {
-        return false;
+    public boolean moveNote(long id) {
+        int rowsAffected = DataSupport.delete(Note.class, id);
+        return rowsAffected != 0;
     }
 
     @Override
-    public boolean resetNote(int index, Note note) {
-        return false;
+    public boolean resetNote(long id, Note note) {
+        int rowAffected = note.update(id);
+        return rowAffected != 0;
     }
 
     @Override
-    public boolean resetNote(int index, String content) {
-        testContent[index].setContent(content);
-        return false;
+    public boolean resetNote(long id, String content) {
+        Note note = DataSupport.find(Note.class, id);
+        note.setContent(content);
+        return note.save();
     }
 
     @Override
     public String[] allNoteContents() {
-        String[] ans = new String[getNoteNumber()];
-        for(int i= 0;i<ans.length;i++){
-            ans[i] = getNoteItem(i).getContent();
+        List<Note> notes = getAllNotes();
+        String[] results = new String[notes.size()];
+        for (int i = 0; i < notes.size(); i++) {
+            results[i] = notes.get(i).getContent();
+            Log.i(TAG, "allNoteContents: notes of index " + i + "  with id = " + notes.get(i).getId());
+            Log.i(TAG, "allNoteContents: " + (DataSupport.find(Note.class, notes.get(i).getId()) == null));
         }
-        return ans;
+        return results;
     }
 }

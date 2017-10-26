@@ -1,11 +1,16 @@
 package com.bfd.note.util;
 
-public class Note {
+import org.litepal.annotation.Column;
+import org.litepal.crud.DataSupport;
+
+public class Note extends DataSupport {
+
     private String content;
-    private int id;
+
+    private Long id;
     private String title;
 
-    public Note(String content){
+    public Note(String content) {
         this.content = content;
     }
 
@@ -17,11 +22,11 @@ public class Note {
         this.content = content;
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

@@ -10,25 +10,25 @@ import android.widget.TextView;
 import jp.wasabeef.richeditor.RichEditor;
 
 public class EditorActivity extends AppCompatActivity {
-    public static final String RESULT_INDEX = "result index";
+    public static final String RESULT_ID = "result_id";
     public static final String RESULT_CONTENT = "result content";
 
     private RichEditor mEditor;
     private TextView mPreview;
-    private int index;
+    private long id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_editor);
-        index = getIntent().getIntExtra(ListAdapter.EDIT_INDEX, -1);
+        id = getIntent().getLongExtra(ListAdapter.EDIT_ID, -1);
         setUpEditor(getIntent().getStringExtra(ListAdapter.EDIT_CONTENT));
     }
 
     @Override
     public void onBackPressed() {
         Intent intent = new Intent()
-                .putExtra(RESULT_INDEX, index)
+                .putExtra(RESULT_ID, id)
                 .putExtra(RESULT_CONTENT, mPreview.getText());
 
         setResult(RESULT_OK, intent);

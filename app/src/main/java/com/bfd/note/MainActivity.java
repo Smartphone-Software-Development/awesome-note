@@ -35,7 +35,6 @@ public class MainActivity extends AppCompatActivity {
     protected DrawerLayout mDrawLayout;
 
 
-
     private static final int DEFAULT_TRANSITION_EFFECT = JazzyHelper.HELIX;
     private int mCurrentTransitionEffect = DEFAULT_TRANSITION_EFFECT;
     private Container container;
@@ -87,7 +86,6 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // TODO:
         Intent intent;
         Toast.makeText(this, Integer.toString(item.getItemId()), Toast.LENGTH_SHORT).show();
         switch (item.getItemId()) {
@@ -118,13 +116,21 @@ public class MainActivity extends AppCompatActivity {
                     Log.i(TAG, "onActivityResult: content = " + content);
                     container.resetNote(id, content);
                 }
+                break;
             case ADD_RESULT:
                 if (resultCode == RESULT_OK) {
                     String content = data.getStringExtra(EditorActivity.RESULT_CONTENT);
                     container.addNote(new Note(content));
                 }
-
+                break;
             default:
         }
+
+        // update list adapter
+        if (resultCode == RESULT_OK) {
+            listAdapter = new ListAdapter(this, R.layout.grid_item, container);
+        }
+
+        mGrid.setAdapter(listAdapter);
     }
 }

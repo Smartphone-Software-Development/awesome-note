@@ -39,6 +39,7 @@ class ListAdapter extends ArrayAdapter<String> {
         if (convertView == null) {
             convertView = inflater.inflate(itemLayoutRes, null);
             holder = new ViewHolder(convertView);
+            holder.text.setBackgroundColor(res.getColor(R.color.colorPrimaryDark));
             convertView.setTag(holder);
             convertView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -57,8 +58,6 @@ class ListAdapter extends ArrayAdapter<String> {
             holder = (ViewHolder) convertView.getTag();
         }
 
-        // TODO: change position ?
-        holder.text.setBackgroundColor(res.getColor(R.color.colorPrimaryDark));
         holder.text.setText(container.getAllNotes().get(position).getContent());
         return convertView;
     }

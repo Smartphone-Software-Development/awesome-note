@@ -57,6 +57,7 @@ public class EditorActivity extends AppCompatActivity {
         });
 
         mEditor.setHtml(content);
+        mPreview.setText(content);
 
         findViewById(R.id.action_undo).setOnClickListener(new View.OnClickListener() {
             @Override

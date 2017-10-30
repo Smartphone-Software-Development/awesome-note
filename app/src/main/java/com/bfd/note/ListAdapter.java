@@ -13,10 +13,11 @@ import android.widget.TextView;
 import com.bfd.note.store.Container;
 import com.bfd.note.util.Note;
 
+import static com.bfd.note.EditorActivity.EDIT_CONTENT;
+import static com.bfd.note.EditorActivity.EDIT_ID;
+
 class ListAdapter extends ArrayAdapter<String> {
     private static final String TAG = "ListAdapter";
-    public final static String EDIT_CONTENT = "edit_content";
-    public final static String EDIT_ID = "edit_index";
     private final LayoutInflater inflater;
     private final Resources res;
     private final int itemLayoutRes;

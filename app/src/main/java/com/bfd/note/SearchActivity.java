@@ -21,8 +21,12 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static com.bfd.note.EditorActivity.EDIT_CONTENT;
+import static com.bfd.note.EditorActivity.EDIT_ID;
+
 public class SearchActivity extends AppCompatActivity {
     private static final String TAG = "SearchActivity";
+    private static final int EDIT_RESULT = 1;
     @BindView(R.id.search)
     protected SearchView searchView;
     @BindView(R.id.search_result)
@@ -33,6 +37,19 @@ public class SearchActivity extends AppCompatActivity {
 
 
     private List<Long> searchResult;
+
+    private View.OnClickListener searchResultClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            ViewHolder holder = (ViewHolder) v.getTag();
+            long id = holder.getId();
+
+            Intent intent = new Intent(SearchActivity.this, EditorActivity.class)
+                    .putExtra(EDIT_CONTENT, container.getNoteItem(id).getContent())
+                    .putExtra(EDIT_ID, id);
+            startActivityForResult(intent, EDIT_RESULT);
+        }
+    };
 
     private SearchView.OnQueryTextListener searchViewListener = new SearchView.OnQueryTextListener() {
         @Override
@@ -60,19 +77,7 @@ public class SearchActivity extends AppCompatActivity {
                 convertView = inflater.inflate(R.layout.search_item, parent);
                 holder = new ViewHolder(convertView);
                 convertView.setTag(holder);
-//                convertView.setOnClickListener(new View.OnClickListener() {
-//                    @Override
-//                    public void onClick(View v) {
-//
-//
-////                        Intent intent = new Intent(parentActivity, EditorActivity.class)
-////                                .putExtra(EDIT_CONTENT, note.getContent())
-////                                .putExtra(EDIT_ID, note.getId());
-//
-//                        Log.i(TAG, "onClick: note id = " + note.getId());
-////                        parentActivity.startActivityForResult(intent, MainActivity.EDIT_RESULT);
-//                    }
-//                });
+                convertView.setOnClickListener(searchResultClickListener);
             } else {
                 holder = (ViewHolder) convertView.getTag();
             }
@@ -80,16 +85,9 @@ public class SearchActivity extends AppCompatActivity {
             Long id = searchResult.get(position);
             Note note = container.getNoteItem(id);
             holder.text.setText(note.getContent().substring(0, 20));
+            holder.setId(id);
 
             return convertView;
-        }
-
-        class ViewHolder {
-            final TextView text;
-
-            ViewHolder(View view) {
-                text = (TextView) view.findViewById(R.id.text);
-            }
         }
     };
 
@@ -100,7 +98,7 @@ public class SearchActivity extends AppCompatActivity {
         setContentView(R.layout.activity_search);
         ButterKnife.bind(this);
 
-        // TODO
+        // TODO, how to get container
         container = new ContainerImpl();
         query = new ContainerImpl();
 
@@ -109,5 +107,36 @@ public class SearchActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode){
+            case EDIT_RESULT:
+                if(resultCode == RESULT_OK){
+                    long id = data.getLongExtra(EditorActivity.RESULT_ID, -1);
+                    String content = data.getStringExtra(EditorActivity.RESULT_CONTENT);
+                    Log.i(TAG, "onActivityResult: id = " + id);
+                    Log.i(TAG, "onActivityResult: content = " + content);
+                    container.resetNote(id, content);
+                }
+        }
+    }
+
+    private class ViewHolder {
+        final TextView text;
+        long id;
+
+        ViewHolder(View view) {
+            text = (TextView) view.findViewById(R.id.text);
+        }
+
+        public long getId() {
+            return id;
+        }
+
+        public void setId(long id) {
+            this.id = id;
+        }
+    }
 
 }

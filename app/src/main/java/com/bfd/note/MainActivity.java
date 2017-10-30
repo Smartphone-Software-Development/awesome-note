@@ -21,6 +21,8 @@ import com.twotoasters.jazzylistview.JazzyHelper;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static com.bfd.note.EditorActivity.EDIT_ID;
+
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
     private static final String KEY_TRANSITION_EFFECT = "transition_effect";
@@ -53,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, EditorActivity.class)
-                        .putExtra(ListAdapter.EDIT_ID, listAdapter.getCount());
+                        .putExtra(EDIT_ID, listAdapter.getCount());
                 Log.i(TAG, "onOptionsItemSelected: list adapter count = " + listAdapter.getCount());
                 startActivityForResult(intent, ADD_RESULT);
             }

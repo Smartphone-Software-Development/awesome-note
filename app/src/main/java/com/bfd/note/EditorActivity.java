@@ -13,6 +13,9 @@ public class EditorActivity extends AppCompatActivity {
     public static final String RESULT_ID = "result_id";
     public static final String RESULT_CONTENT = "result content";
 
+    public final static String EDIT_CONTENT = "edit_content";
+    public final static String EDIT_ID = "edit_index";
+
     private RichEditor mEditor;
     private TextView mPreview;
     private long id;
@@ -21,8 +24,8 @@ public class EditorActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_editor);
-        id = getIntent().getLongExtra(ListAdapter.EDIT_ID, -1);
-        setUpEditor(getIntent().getStringExtra(ListAdapter.EDIT_CONTENT));
+        id = getIntent().getLongExtra(EDIT_ID, -1);
+        setUpEditor(getIntent().getStringExtra(EDIT_CONTENT));
     }
 
     @Override

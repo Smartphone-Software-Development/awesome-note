@@ -11,7 +11,7 @@ import java.util.List;
 /**
  * implement with LitePal
  */
-public class ContainerImpl implements Container {
+public class ContainerImpl implements Container, Query {
     private static final String TAG = "ContainerImpl";
 
     public ContainerImpl() {
@@ -66,5 +66,11 @@ public class ContainerImpl implements Container {
             Log.i(TAG, "allNoteContents: " + (DataSupport.find(Note.class, notes.get(i).getId()) == null));
         }
         return results;
+    }
+
+    @Override
+    public List<Long> query(String keyWord) {
+        // TODO
+        return null;
     }
 }

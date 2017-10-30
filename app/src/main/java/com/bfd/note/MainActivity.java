@@ -64,7 +64,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private Container createConnection() {
-        return new ContainerImpl();
+        return ContainerImpl.getContainer();
     }
 
     private void setToolBar() {

@@ -13,8 +13,15 @@ import java.util.List;
  */
 public class ContainerImpl implements Container, Query {
     private static final String TAG = "ContainerImpl";
+    private static final ContainerImpl containerImpl = new ContainerImpl();
+    private ContainerImpl() {}
 
-    public ContainerImpl() {
+    public static Container getContainer(){
+        return containerImpl;
+    }
+
+    public static Query getQuery(){
+        return containerImpl;
     }
 
     @Override

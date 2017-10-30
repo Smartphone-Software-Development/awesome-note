@@ -98,9 +98,8 @@ public class SearchActivity extends AppCompatActivity {
         setContentView(R.layout.activity_search);
         ButterKnife.bind(this);
 
-        // TODO, how to get container
-        container = new ContainerImpl();
-        query = new ContainerImpl();
+        container = ContainerImpl.getContainer();
+        query = ContainerImpl.getQuery();
 
         searchResultView.setAdapter(adapter);
         searchView.setOnQueryTextListener(searchViewListener);

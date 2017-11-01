@@ -15,6 +15,7 @@ import com.bfd.note.util.Note;
 
 import static com.bfd.note.EditorActivity.EDIT_CONTENT;
 import static com.bfd.note.EditorActivity.EDIT_ID;
+import static com.bfd.note.EditorActivity.IS_ADD;
 
 class ListAdapter extends ArrayAdapter<String> {
     private static final String TAG = "ListAdapter";
@@ -49,7 +50,8 @@ class ListAdapter extends ArrayAdapter<String> {
 
                     Intent intent = new Intent(parentActivity, EditorActivity.class)
                             .putExtra(EDIT_CONTENT, note.getContent())
-                            .putExtra(EDIT_ID, note.getId());
+                            .putExtra(EDIT_ID, note.getId())
+                            .putExtra(IS_ADD, false);
 
                     Log.i(TAG, "onClick: note id = " + note.getId());
                     parentActivity.startActivityForResult(intent, MainActivity.EDIT_RESULT);

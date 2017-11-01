@@ -22,6 +22,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 import static com.bfd.note.EditorActivity.EDIT_ID;
+import static com.bfd.note.EditorActivity.IS_ADD;
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
@@ -55,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, EditorActivity.class)
-                        .putExtra(EDIT_ID, listAdapter.getCount());
+                        .putExtra(IS_ADD, true);
                 Log.i(TAG, "onOptionsItemSelected: list adapter count = " + listAdapter.getCount());
                 startActivityForResult(intent, ADD_RESULT);
             }
@@ -116,13 +117,11 @@ public class MainActivity extends AppCompatActivity {
                     String content = data.getStringExtra(EditorActivity.RESULT_CONTENT);
                     Log.i(TAG, "onActivityResult: id = " + id);
                     Log.i(TAG, "onActivityResult: content = " + content);
-                    container.resetNote(id, content);
                 }
                 break;
             case ADD_RESULT:
                 if (resultCode == RESULT_OK) {
-                    String content = data.getStringExtra(EditorActivity.RESULT_CONTENT);
-                    container.addNote(new Note(content));
+                    // do nothing
                 }
                 break;
             default:

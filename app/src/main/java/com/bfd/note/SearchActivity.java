@@ -23,6 +23,7 @@ import butterknife.ButterKnife;
 
 import static com.bfd.note.EditorActivity.EDIT_CONTENT;
 import static com.bfd.note.EditorActivity.EDIT_ID;
+import static com.bfd.note.EditorActivity.IS_ADD;
 
 public class SearchActivity extends AppCompatActivity {
     private static final String TAG = "SearchActivity";
@@ -46,7 +47,8 @@ public class SearchActivity extends AppCompatActivity {
 
             Intent intent = new Intent(SearchActivity.this, EditorActivity.class)
                     .putExtra(EDIT_CONTENT, container.getNoteItem(id).getContent())
-                    .putExtra(EDIT_ID, id);
+                    .putExtra(EDIT_ID, id)
+                    .putExtra(IS_ADD, false);
             startActivityForResult(intent, EDIT_RESULT);
         }
     };
@@ -116,7 +118,6 @@ public class SearchActivity extends AppCompatActivity {
                     String content = data.getStringExtra(EditorActivity.RESULT_CONTENT);
                     Log.i(TAG, "onActivityResult: id = " + id);
                     Log.i(TAG, "onActivityResult: content = " + content);
-                    container.resetNote(id, content);
                 }
         }
     }

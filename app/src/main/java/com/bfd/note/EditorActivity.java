@@ -7,6 +7,10 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
+import com.bfd.note.store.Container;
+import com.bfd.note.store.ContainerImpl;
+import com.bfd.note.util.Note;
+
 import jp.wasabeef.richeditor.RichEditor;
 
 public class EditorActivity extends AppCompatActivity {
@@ -15,16 +19,21 @@ public class EditorActivity extends AppCompatActivity {
 
     public final static String EDIT_CONTENT = "edit_content";
     public final static String EDIT_ID = "edit_index";
+    public final static String IS_ADD = "is_add";
 
     private RichEditor mEditor;
     private TextView mPreview;
     private long id;
+    private Container container;
+    private boolean isAdd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_editor);
         id = getIntent().getLongExtra(EDIT_ID, -1);
+        isAdd = getIntent().getBooleanExtra(IS_ADD, false);
+        container = ContainerImpl.getContainer();
         setUpEditor(getIntent().getStringExtra(EDIT_CONTENT));
     }
 
@@ -33,7 +42,11 @@ public class EditorActivity extends AppCompatActivity {
         Intent intent = new Intent()
                 .putExtra(RESULT_ID, id)
                 .putExtra(RESULT_CONTENT, mPreview.getText());
-
+        if (isAdd) {
+            container.addNote(new Note(mPreview.getText().toString()));
+        } else {
+            container.resetNote(id, mPreview.getText().toString());
+        }
         setResult(RESULT_OK, intent);
         finish();
     }

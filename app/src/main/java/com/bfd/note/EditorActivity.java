@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Menu;
 import android.view.View;
 import android.widget.TextView;
 
@@ -22,7 +23,6 @@ public class EditorActivity extends AppCompatActivity {
     public final static String IS_ADD = "is_add";
 
     private RichEditor mEditor;
-    private TextView mPreview;
     private long id;
     private Container container;
     private boolean isAdd;
@@ -41,11 +41,11 @@ public class EditorActivity extends AppCompatActivity {
     public void onBackPressed() {
         Intent intent = new Intent()
                 .putExtra(RESULT_ID, id)
-                .putExtra(RESULT_CONTENT, mPreview.getText());
+                .putExtra(RESULT_CONTENT, mEditor.getHtml());
         if (isAdd) {
-            container.addNote(new Note(mPreview.getText().toString()));
+            container.addNote(new Note( mEditor.getHtml()));
         } else {
-            container.resetNote(id, mPreview.getText().toString());
+            container.resetNote(id,  mEditor.getHtml());
         }
         setResult(RESULT_OK, intent);
         finish();
@@ -64,16 +64,14 @@ public class EditorActivity extends AppCompatActivity {
         mEditor.setPlaceholder("Insert text here...");
         //mEditor.setInputEnabled(false);
 
-        mPreview = (TextView) findViewById(R.id.preview);
         mEditor.setOnTextChangeListener(new RichEditor.OnTextChangeListener() {
             @Override
             public void onTextChange(String text) {
-                mPreview.setText(text);
+                // TODO:
             }
         });
 
         mEditor.setHtml(content);
-        mPreview.setText(content);
 
         findViewById(R.id.action_undo).setOnClickListener(new View.OnClickListener() {
             @Override

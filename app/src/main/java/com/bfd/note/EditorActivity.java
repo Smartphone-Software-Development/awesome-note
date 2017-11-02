@@ -43,7 +43,8 @@ public class EditorActivity extends AppCompatActivity {
                 .putExtra(RESULT_ID, id)
                 .putExtra(RESULT_CONTENT, mEditor.getHtml());
         if (isAdd) {
-            container.addNote(new Note( mEditor.getHtml()));
+            if(!mEditor.getHtml().isEmpty())
+                container.addNote(new Note( mEditor.getHtml()));
         } else {
             container.resetNote(id,  mEditor.getHtml());
         }

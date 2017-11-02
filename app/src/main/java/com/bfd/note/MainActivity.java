@@ -83,7 +83,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.toolbar, menu);
-        menu.getItem(2).setIcon(android.R.drawable.ic_menu_search);
+        menu.findItem(R.id.main_settings).setIcon(android.R.drawable.ic_menu_more);
+        menu.findItem(R.id.main_search).setIcon(android.R.drawable.ic_menu_search);
         return true;
     }
 
@@ -93,11 +94,11 @@ public class MainActivity extends AppCompatActivity {
         Intent intent;
         Toast.makeText(this, Integer.toString(item.getItemId()), Toast.LENGTH_SHORT).show();
         switch (item.getItemId()) {
-            case R.id.settings:
+            case R.id.main_settings:
                 intent = new Intent(MainActivity.this, SettingsActivity.class);
                 startActivity(intent);
                 return true;
-            case R.id.search:
+            case R.id.main_search:
                 intent = new Intent(MainActivity.this, SearchActivity.class);
                 startActivity(intent);
                 return true;

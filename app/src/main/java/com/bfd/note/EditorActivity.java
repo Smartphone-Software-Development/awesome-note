@@ -5,8 +5,9 @@ import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
-import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bfd.note.store.Container;
 import com.bfd.note.store.ContainerImpl;
@@ -42,14 +43,51 @@ public class EditorActivity extends AppCompatActivity {
         Intent intent = new Intent()
                 .putExtra(RESULT_ID, id)
                 .putExtra(RESULT_CONTENT, mEditor.getHtml());
-        if (isAdd) {
-            if(!mEditor.getHtml().isEmpty())
-                container.addNote(new Note( mEditor.getHtml()));
-        } else {
-            container.resetNote(id,  mEditor.getHtml());
-        }
+        onSaveNote();
         setResult(RESULT_OK, intent);
         finish();
+    }
+
+    private void onSaveNote() {
+        if (isAdd) {
+            if (!mEditor.getHtml().isEmpty())
+                container.addNote(new Note(mEditor.getHtml()));
+            isAdd = false;
+        } else {
+            container.resetNote(id, mEditor.getHtml());
+        }
+        Toast.makeText(this, "保存成功", Toast.LENGTH_SHORT).show();
+    }
+
+    private void onDeleteNote() {
+        // TODO: need to update listAdapter as well !!!
+        if (!isAdd)
+            container.moveNote(id);
+
+        Toast.makeText(this, "删除成功", Toast.LENGTH_SHORT).show();
+        this.finish();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.editor_menu, menu);
+        menu.findItem(R.id.editor_delete).setIcon(android.R.drawable.ic_delete);
+        menu.findItem(R.id.editor_save).setIcon(android.R.drawable.ic_menu_save);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.editor_save:
+                onSaveNote();
+                break;
+            case R.id.editor_delete:
+                onDeleteNote();
+                break;
+            default:
+        }
+        return true;
     }
 
     private void setUpEditor(String content) {

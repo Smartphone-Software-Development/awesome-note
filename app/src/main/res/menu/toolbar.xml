@@ -6,9 +6,8 @@
         android:title="Backup"
         app:showAsAction="always" />
     <item
-        android:id="@+id/delete"
-        android:icon="@drawable/sublime_text"
-        android:title="Delete"
+        android:id="@+id/search"
+        android:title="Search"
         app:showAsAction="ifRoom" />
     <item
         android:id="@+id/settings"

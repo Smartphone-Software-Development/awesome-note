@@ -83,6 +83,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.toolbar, menu);
+        menu.getItem(2).setIcon(android.R.drawable.ic_menu_search);
         return true;
     }
 
@@ -94,6 +95,10 @@ public class MainActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.settings:
                 intent = new Intent(MainActivity.this, SettingsActivity.class);
+                startActivity(intent);
+                return true;
+            case R.id.search:
+                intent = new Intent(MainActivity.this, SearchActivity.class);
                 startActivity(intent);
                 return true;
 

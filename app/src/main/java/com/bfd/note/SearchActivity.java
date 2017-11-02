@@ -67,38 +67,38 @@ public class SearchActivity extends AppCompatActivity {
         }
     };
 
-    private android.widget.ListAdapter adapter = new ArrayAdapter<String>(this,
-            R.layout.search_item, R.id.search_result_text) {
-        private final LayoutInflater inflater = LayoutInflater.from(getContext());
-
-        @NonNull
-        @Override
-        public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-            ViewHolder holder;
-            if (convertView == null) {
-                convertView = inflater.inflate(R.layout.search_item, parent);
-                holder = new ViewHolder(convertView);
-                convertView.setTag(holder);
-                convertView.setOnClickListener(searchResultClickListener);
-            } else {
-                holder = (ViewHolder) convertView.getTag();
-            }
-
-            Long id = searchResult.get(position);
-            Note note = container.getNoteItem(id);
-            holder.text.setText(note.getContent().substring(0, 20));
-            holder.setId(id);
-
-            return convertView;
-        }
-    };
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
         ButterKnife.bind(this);
+
+        android.widget.ListAdapter adapter = new ArrayAdapter<String>(this,
+                R.layout.search_item, R.id.search_result_text) {
+            private final LayoutInflater inflater = LayoutInflater.from(getContext());
+
+            @NonNull
+            @Override
+            public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+                ViewHolder holder;
+                if (convertView == null) {
+                    convertView = inflater.inflate(R.layout.search_item, parent);
+                    holder = new ViewHolder(convertView);
+                    convertView.setTag(holder);
+                    convertView.setOnClickListener(searchResultClickListener);
+                } else {
+                    holder = (ViewHolder) convertView.getTag();
+                }
+
+                Long id = searchResult.get(position);
+                Note note = container.getNoteItem(id);
+                holder.text.setText(note.getContent().substring(0, 20));
+                holder.setId(id);
+
+                return convertView;
+            }
+        };
 
         container = ContainerImpl.getContainer();
         query = ContainerImpl.getQuery();

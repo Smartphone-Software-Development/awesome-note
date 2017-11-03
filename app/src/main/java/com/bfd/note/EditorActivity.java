@@ -1,5 +1,8 @@
 package com.bfd.note;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
@@ -60,14 +63,31 @@ public class EditorActivity extends AppCompatActivity {
     }
 
     private void onDeleteNote() {
-        // TODO: need to update listAdapter as well !!!
-        if (!isAdd)
-            container.moveNote(id);
+        DialogInterface.OnClickListener deleteListener = new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                if (!isAdd)
+                    container.moveNote(id);
 
-        Toast.makeText(this, "删除成功", Toast.LENGTH_SHORT).show();
-        Intent intent = new Intent();
-        setResult(RESULT_OK, intent);
-        this.finish();
+                Toast.makeText(EditorActivity.this, "删除成功", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent();
+                setResult(RESULT_OK, intent);
+                EditorActivity.this.finish();
+            }
+        };
+
+        DialogInterface.OnClickListener nothing = new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // do nothing
+            }
+        };
+
+        new AlertDialog.Builder(this)
+                .setTitle("确定删除该笔记?")
+                .setNegativeButton("确定删除", deleteListener)
+                .setPositiveButton("不删除", nothing)
+                .show();
     }
 
     @Override

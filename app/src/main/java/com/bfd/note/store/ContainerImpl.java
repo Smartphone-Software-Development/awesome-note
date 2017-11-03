@@ -6,6 +6,7 @@ import com.bfd.note.util.Note;
 
 import org.litepal.crud.DataSupport;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -77,7 +78,26 @@ public class ContainerImpl implements Container, Query {
 
     @Override
     public List<Long> query(String keyWord) {
-        // TODO
+
+        List<Note> allNote;
+        allNote = DataSupport.findAll(Note.class);
+
+        List<Long> selectIndex = new ArrayList<>();
+
+        for(int i = 0; i < allNote.size(); i++){
+
+            if(allNote.get(i).getContent().indexOf(keyWord) >= 0){
+                selectIndex.add((long)i);
+            }
+        }
+        System.out.println("here");
+
+
+        if(selectIndex.size() > 0){
+            //System.out.println(selectIndex.get(0));
+            return selectIndex;
+        }
+
         return null;
     }
 }

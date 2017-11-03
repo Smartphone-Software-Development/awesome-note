@@ -65,6 +65,8 @@ public class EditorActivity extends AppCompatActivity {
             container.moveNote(id);
 
         Toast.makeText(this, "删除成功", Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent();
+        setResult(RESULT_OK, intent);
         this.finish();
     }
 

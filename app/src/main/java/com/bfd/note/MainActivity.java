@@ -134,10 +134,12 @@ public class MainActivity extends AppCompatActivity {
         }
 
         // update list adapter
+        Log.i(TAG, "onActivityResult: update container");
         if (resultCode == RESULT_OK) {
             listAdapter = new ListAdapter(this, R.layout.grid_item, container);
         }
 
         mGrid.setAdapter(listAdapter);
+
     }
 }

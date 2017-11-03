@@ -73,8 +73,6 @@ public class EditorActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.editor_menu, menu);
-        menu.findItem(R.id.editor_delete).setIcon(android.R.drawable.ic_delete);
-        menu.findItem(R.id.editor_save).setIcon(android.R.drawable.ic_menu_save);
         return true;
     }
 

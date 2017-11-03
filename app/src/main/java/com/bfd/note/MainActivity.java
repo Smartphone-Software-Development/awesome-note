@@ -71,7 +71,6 @@ public class MainActivity extends AppCompatActivity {
     private void setToolBar() {
         setSupportActionBar(toolbar);
         toolbar.setBackgroundColor(getResources().getColor(R.color.toolbar_background));
-        toolbar.setNavigationIcon(getResources().getDrawable(R.drawable.sublime_text2));
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -83,8 +82,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.toolbar, menu);
-        menu.findItem(R.id.main_settings).setIcon(android.R.drawable.ic_menu_more);
-        menu.findItem(R.id.main_search).setIcon(android.R.drawable.ic_menu_search);
         return true;
     }
 

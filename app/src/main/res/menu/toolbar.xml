@@ -3,9 +3,11 @@
     <item
         android:id="@+id/main_search"
         android:title="Search"
+        android:icon="@android:drawable/ic_menu_search"
         app:showAsAction="ifRoom" />
     <item
         android:id="@+id/main_settings"
         android:title="Settings"
+        android:icon="@android:drawable/ic_menu_more"
         app:showAsAction="ifRoom" />
 </menu>

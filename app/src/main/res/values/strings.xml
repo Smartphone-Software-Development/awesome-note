@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Course</string>
+    <string name="app_name">Smart Note</string>
     <string name="action_settings">Settings</string>
     <string name="standard">Standard</string>
     <string name="search_hint">输入搜索内容</string>

@@ -80,6 +80,9 @@ public class SearchActivity extends AppCompatActivity {
         setContentView(R.layout.activity_search);
         ButterKnife.bind(this);
 
+        Toast.makeText(this, "该功能尚待开发", Toast.LENGTH_LONG).show();
+        finish();
+
         adapter = new ArrayAdapter(this,
                 R.layout.search_item, R.id.search_result_text) {
             private final LayoutInflater inflater = LayoutInflater.from(getContext());

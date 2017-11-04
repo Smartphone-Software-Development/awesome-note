@@ -53,9 +53,10 @@ public class EditorActivity extends AppCompatActivity {
 
     private void onSaveNote() {
         if (isAdd) {
-            if (!mEditor.getHtml().isEmpty())
-                container.addNote(new Note(mEditor.getHtml()));
+            Note note = new Note(mEditor.getHtml());
+            container.addNote(note);
             isAdd = false;
+            id = note.getId();
         } else {
             container.resetNote(id, mEditor.getHtml());
         }

@@ -16,6 +16,7 @@ import com.bfd.note.store.ContainerImpl;
 import com.bfd.note.store.Query;
 import com.bfd.note.util.Note;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -35,6 +36,7 @@ public class SearchActivity extends AppCompatActivity {
 
     private Container container;
     private Query query;
+    private ListAdapter adapter;
 
 
     private List<Long> searchResult;
@@ -56,13 +58,17 @@ public class SearchActivity extends AppCompatActivity {
     private SearchView.OnQueryTextListener searchViewListener = new SearchView.OnQueryTextListener() {
         @Override
         public boolean onQueryTextSubmit(String text) {
+            Log.i(TAG, "onQueryTextSubmit: submit");
             searchResult = query.query(text);
+            updateListAdapter();
             return false;
         }
 
         @Override
         public boolean onQueryTextChange(String newText) {
+            Log.i(TAG, "onQueryTextChange: search text change");
             searchResult = query.query(newText);
+            updateListAdapter();
             return false;
         }
     };
@@ -74,7 +80,7 @@ public class SearchActivity extends AppCompatActivity {
         setContentView(R.layout.activity_search);
         ButterKnife.bind(this);
 
-        android.widget.ListAdapter adapter = new ArrayAdapter<String>(this,
+        adapter = new ArrayAdapter(this,
                 R.layout.search_item, R.id.search_result_text) {
             private final LayoutInflater inflater = LayoutInflater.from(getContext());
 
@@ -90,7 +96,7 @@ public class SearchActivity extends AppCompatActivity {
                 } else {
                     holder = (ViewHolder) convertView.getTag();
                 }
-
+                Log.i(TAG, "getView: position = " + position);
                 Long id = searchResult.get(position);
                 Note note = container.getNoteItem(id);
                 holder.text.setText(note.getContent().substring(0, 20));
@@ -99,13 +105,16 @@ public class SearchActivity extends AppCompatActivity {
                 return convertView;
             }
         };
-
         container = ContainerImpl.getContainer();
         query = ContainerImpl.getQuery();
-
         searchResultView.setAdapter(adapter);
         searchView.setOnQueryTextListener(searchViewListener);
 
+    }
+
+    @SuppressWarnings("unchecked")
+    private void updateListAdapter(){
+        ((ArrayAdapter<String>)adapter).notifyDataSetChanged();
     }
 
     @Override
@@ -127,7 +136,7 @@ public class SearchActivity extends AppCompatActivity {
         long id;
 
         ViewHolder(View view) {
-            text = (TextView) view.findViewById(R.id.text);
+            text = (TextView) view.findViewById(R.id.search_result_text);
         }
 
         public long getId() {

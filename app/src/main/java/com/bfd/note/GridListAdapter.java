@@ -36,21 +36,22 @@ class GridListAdapter extends ArrayAdapter<String> {
 
     @Override
     public View getView(final int position, View convertView, final ViewGroup parent) {
-        ViewHolder holder;
+        final ViewHolder holder;
+        final Note note = container.getAllNotes().get(position);
 
         if (convertView == null) {
             convertView = inflater.inflate(itemLayoutRes, null);
             holder = new ViewHolder(convertView);
             holder.text.setBackgroundColor(res.getColor(R.color.colorPrimaryDark));
+            holder.setNote(note);
             convertView.setTag(holder);
             convertView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Note note = container.getAllNotes().get(position);
 
                     Intent intent = new Intent(parentActivity, EditorActivity.class)
-                            .putExtra(EDIT_CONTENT, note.getContent())
-                            .putExtra(EDIT_ID, note.getId())
+                            .putExtra(EDIT_CONTENT, holder.getNote().getContent())
+                            .putExtra(EDIT_ID, holder.getNote().getId())
                             .putExtra(IS_ADD, false);
 
                     Log.i(TAG, "onClick: note id = " + note.getId());
@@ -61,15 +62,25 @@ class GridListAdapter extends ArrayAdapter<String> {
             holder = (ViewHolder) convertView.getTag();
         }
 
-        holder.text.setText(container.getAllNotes().get(position).getShortContent());
+        holder.setNote(note);
+        holder.text.setText(note.getShortContent());
         return convertView;
     }
 
     static class ViewHolder {
         final TextView text;
+        private Note note;
 
         ViewHolder(View view) {
             text = (TextView) view.findViewById(R.id.text);
+        }
+
+        public void setNote(Note note) {
+            this.note = note;
+        }
+
+        public Note getNote() {
+            return note;
         }
     }
 }

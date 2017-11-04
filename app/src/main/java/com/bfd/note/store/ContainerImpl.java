@@ -15,13 +15,15 @@ import java.util.List;
 public class ContainerImpl implements Container, Query {
     private static final String TAG = "ContainerImpl";
     private static final ContainerImpl containerImpl = new ContainerImpl();
-    private ContainerImpl() {}
 
-    public static Container getContainer(){
+    private ContainerImpl() {
+    }
+
+    public static Container getContainer() {
         return containerImpl;
     }
 
-    public static Query getQuery(){
+    public static Query getQuery() {
         return containerImpl;
     }
 
@@ -78,26 +80,15 @@ public class ContainerImpl implements Container, Query {
 
     @Override
     public List<Long> query(String keyWord) {
-
-        List<Note> allNote;
-        allNote = DataSupport.findAll(Note.class);
-
         List<Long> selectIndex = new ArrayList<>();
 
-        for(int i = 0; i < allNote.size(); i++){
-
-            if(allNote.get(i).getContent().indexOf(keyWord) >= 0){
-                selectIndex.add((long)i);
+        for (Note note : getAllNotes()) {
+            if (note.getContent().contains(keyWord)) {
+                selectIndex.add(note.getId());
+                Log.i(TAG, "query: find note with id " + note.getId());
             }
         }
-        System.out.println("here");
 
-
-        if(selectIndex.size() > 0){
-            //System.out.println(selectIndex.get(0));
-            return selectIndex;
-        }
-
-        return null;
+        return selectIndex;
     }
 }

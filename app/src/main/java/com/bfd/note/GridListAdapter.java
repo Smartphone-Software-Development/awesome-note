@@ -17,15 +17,15 @@ import static com.bfd.note.EditorActivity.EDIT_CONTENT;
 import static com.bfd.note.EditorActivity.EDIT_ID;
 import static com.bfd.note.EditorActivity.IS_ADD;
 
-class ListAdapter extends ArrayAdapter<String> {
-    private static final String TAG = "ListAdapter";
+class GridListAdapter extends ArrayAdapter<String> {
+    private static final String TAG = "GridListAdapter";
     private final LayoutInflater inflater;
     private final Resources res;
     private final int itemLayoutRes;
     private final Container container;
     private final AppCompatActivity parentActivity;
 
-    public ListAdapter(AppCompatActivity parentActivity, int itemLayoutRes, Container container) {
+    public GridListAdapter(AppCompatActivity parentActivity, int itemLayoutRes, Container container) {
         super(parentActivity, itemLayoutRes, R.id.text, container.allNoteContents());
         inflater = LayoutInflater.from(parentActivity);
         res = parentActivity.getResources();
@@ -61,7 +61,7 @@ class ListAdapter extends ArrayAdapter<String> {
             holder = (ViewHolder) convertView.getTag();
         }
 
-        holder.text.setText(container.getAllNotes().get(position).getContent());
+        holder.text.setText(container.getAllNotes().get(position).getShortContent());
         return convertView;
     }
 

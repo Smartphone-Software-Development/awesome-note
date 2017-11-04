@@ -14,14 +14,12 @@ import android.widget.Toast;
 
 import com.bfd.note.store.Container;
 import com.bfd.note.store.ContainerImpl;
-import com.bfd.note.util.Note;
 import com.twotoasters.jazzylistview.JazzyGridView;
 import com.twotoasters.jazzylistview.JazzyHelper;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-import static com.bfd.note.EditorActivity.EDIT_ID;
 import static com.bfd.note.EditorActivity.IS_ADD;
 
 public class MainActivity extends AppCompatActivity {
@@ -41,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
     private static final int DEFAULT_TRANSITION_EFFECT = JazzyHelper.HELIX;
     private int mCurrentTransitionEffect = DEFAULT_TRANSITION_EFFECT;
     private Container container;
-    private ListAdapter listAdapter;
+    private GridListAdapter listAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_grid);
         ButterKnife.bind(this);
         container = createConnection();
-        listAdapter = new ListAdapter(this, R.layout.grid_item, container);
+        listAdapter = new GridListAdapter(this, R.layout.grid_item, container);
         mGrid.setAdapter(listAdapter);
 
         findViewById(R.id.add_button).setOnClickListener(new View.OnClickListener() {
@@ -89,7 +87,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         Intent intent;
-        Toast.makeText(this, Integer.toString(item.getItemId()), Toast.LENGTH_SHORT).show();
         switch (item.getItemId()) {
             case R.id.main_settings:
                 intent = new Intent(MainActivity.this, SettingsActivity.class);
@@ -133,7 +130,7 @@ public class MainActivity extends AppCompatActivity {
         // update list adapter
         Log.i(TAG, "onActivityResult: update container");
         if (resultCode == RESULT_OK) {
-            listAdapter = new ListAdapter(this, R.layout.grid_item, container);
+            listAdapter = new GridListAdapter(this, R.layout.grid_item, container);
         }
 
         mGrid.setAdapter(listAdapter);

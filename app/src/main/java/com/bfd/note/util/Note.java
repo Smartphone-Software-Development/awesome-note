@@ -5,6 +5,8 @@ import org.litepal.crud.DataSupport;
 
 public class Note extends DataSupport {
 
+    private static final int DEFAULT_SHORT_MESSAGE_LENGTH = 50;
+
     private String content;
 
     private Long id;
@@ -36,5 +38,13 @@ public class Note extends DataSupport {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public String getShortContent() {
+        if (content.length() < DEFAULT_SHORT_MESSAGE_LENGTH) {
+            return content;
+        } else {
+            return content.substring(0, DEFAULT_SHORT_MESSAGE_LENGTH) + "...";
+        }
     }
 }

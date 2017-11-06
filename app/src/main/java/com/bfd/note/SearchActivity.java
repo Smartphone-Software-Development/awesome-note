@@ -36,10 +36,10 @@ public class SearchActivity extends AppCompatActivity {
 
     private Container container;
     private Query query;
-    private ListAdapter adapter;
+    private LayoutInflater inflater;
 
 
-    private List<Long> searchResult;
+    private List<Long> searchResult = new ArrayList<>();
 
     private View.OnClickListener searchResultClickListener = new View.OnClickListener() {
         @Override
@@ -79,45 +79,41 @@ public class SearchActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
         ButterKnife.bind(this);
-
-        Toast.makeText(this, "该功能尚待开发", Toast.LENGTH_LONG).show();
-        finish();
-
-        adapter = new ArrayAdapter(this,
-                R.layout.search_item, R.id.search_result_text) {
-            private final LayoutInflater inflater = LayoutInflater.from(getContext());
-
-            @NonNull
-            @Override
-            public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-                ViewHolder holder;
-                if (convertView == null) {
-                    convertView = inflater.inflate(R.layout.search_item, parent);
-                    holder = new ViewHolder(convertView);
-                    convertView.setTag(holder);
-                    convertView.setOnClickListener(searchResultClickListener);
-                } else {
-                    holder = (ViewHolder) convertView.getTag();
-                }
-                Log.i(TAG, "getView: position = " + position);
-                Long id = searchResult.get(position);
-                Note note = container.getNoteItem(id);
-                holder.text.setText(note.getContent().substring(0, 20));
-                holder.setId(id);
-
-                return convertView;
-            }
-        };
         container = ContainerImpl.getContainer();
         query = ContainerImpl.getQuery();
-        searchResultView.setAdapter(adapter);
+        inflater = LayoutInflater.from(this);
         searchView.setOnQueryTextListener(searchViewListener);
 
     }
 
     @SuppressWarnings("unchecked")
     private void updateListAdapter(){
-        ((ArrayAdapter<String>)adapter).notifyDataSetChanged();
+        final List<String> shortResults = new ArrayList<>();
+        for(Long id : searchResult){
+            shortResults.add(container.getNoteItem(id).getShortContent());
+        }
+
+        searchResultView.setAdapter(new ArrayAdapter(this,
+                R.layout.search_item, shortResults) {
+
+            @NonNull
+            @Override
+            public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+                ViewHolder holder;
+                if (convertView == null) {
+                    convertView = inflater.inflate(R.layout.search_item, null);
+                    holder = new ViewHolder(convertView);
+                    convertView.setTag(holder);
+                    convertView.setOnClickListener(searchResultClickListener);
+                } else {
+                    holder = (ViewHolder) convertView.getTag();
+                }
+                Long id = searchResult.get(position);
+                holder.text.setText(shortResults.get(position));
+                holder.setId(id);
+                return convertView;
+            }
+        });
     }
 
     @Override

@@ -310,6 +310,7 @@ public class EditorActivity extends AppCompatActivity {
         findViewById(R.id.action_insert_image).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // TODO: insert image
                 mEditor.insertImage("http://www.1honeywan.com/dachshund/image/7.21/7.21_3_thumb.JPG",
                         "dachshund");
             }
@@ -318,6 +319,7 @@ public class EditorActivity extends AppCompatActivity {
         findViewById(R.id.action_insert_link).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // TODO: insert link
                 mEditor.insertLink("https://github.com/wasabeef", "wasabeef");
             }
         });

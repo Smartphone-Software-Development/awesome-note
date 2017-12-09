@@ -143,7 +143,9 @@ public class MainActivity extends AppCompatActivity {
                 intent = new Intent(MainActivity.this, SearchActivity.class);
                 startActivity(intent);
                 return true;
-
+            case R.id.main_map:
+                intent = new Intent(MainActivity.this, MapViewActivity.class);
+                startActivity(intent);
         }
         return true;
     }

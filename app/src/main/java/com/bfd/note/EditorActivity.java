@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -15,11 +16,13 @@ import android.widget.Toast;
 import com.bfd.note.store.Container;
 import com.bfd.note.store.ContainerImpl;
 import com.bfd.note.store.MySynchronizer;
+import com.bfd.note.util.GaodeMapLocation;
 import com.bfd.note.util.Note;
 
 import jp.wasabeef.richeditor.RichEditor;
 
 public class EditorActivity extends AppCompatActivity {
+    private static final String TAG = "EditorActivity";
     public static final String RESULT_ID = "result_id";
     public static final String RESULT_CONTENT = "result content";
 
@@ -31,6 +34,7 @@ public class EditorActivity extends AppCompatActivity {
     private long id;
     private Container container;
     private boolean isAdd;
+    private GaodeMapLocation locationDetector = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,14 +44,15 @@ public class EditorActivity extends AppCompatActivity {
         isAdd = getIntent().getBooleanExtra(IS_ADD, false);
         container = ContainerImpl.getContainer();
         setUpEditor(getIntent().getStringExtra(EDIT_CONTENT));
+        locationDetector = new GaodeMapLocation(this);
     }
 
     @Override
     public void onBackPressed() {
+        onSaveNote();
         Intent intent = new Intent()
                 .putExtra(RESULT_ID, id)
                 .putExtra(RESULT_CONTENT, mEditor.getHtml());
-        onSaveNote();
         setResult(RESULT_OK, intent);
         finish();
     }
@@ -55,9 +60,11 @@ public class EditorActivity extends AppCompatActivity {
     private void onSaveNote() {
         if (isAdd) {
             Note note = new Note(mEditor.getHtml());
+            note.setLatitude(locationDetector.getLatitude());
+            note.setLongitude(locationDetector.getLongitude());
+            Log.i(TAG, "onSaveNote: latitude =" + note.getLatitude() + ", longitude = " + note.getLongitude());
             container.addNote(note);
             isAdd = false;
-            id = note.getId();
         } else {
             container.resetNote(id, mEditor.getHtml());
         }

@@ -12,6 +12,8 @@ public class Note extends DataSupport {
     private Long id;
     private String title;
 
+    private double latitude, longitude;
+
     public Note(String content) {
         this.content = content;
     }
@@ -46,5 +48,21 @@ public class Note extends DataSupport {
         } else {
             return content.substring(0, DEFAULT_SHORT_MESSAGE_LENGTH) + "...";
         }
+    }
+
+    public void setLatitude(double latitude) {
+        this.latitude = latitude;
+    }
+
+    public void setLongitude(double longitude) {
+        this.longitude = longitude;
+    }
+
+    public double getLatitude() {
+        return latitude;
+    }
+
+    public double getLongitude() {
+        return longitude;
     }
 }

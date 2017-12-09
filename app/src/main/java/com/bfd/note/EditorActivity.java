@@ -1,7 +1,6 @@
 package com.bfd.note;
 
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
@@ -16,7 +15,7 @@ import android.widget.Toast;
 import com.bfd.note.store.Container;
 import com.bfd.note.store.ContainerImpl;
 import com.bfd.note.store.MySynchronizer;
-import com.bfd.note.util.GaodeMapLocation;
+import com.bfd.note.map.GaodeMapLocation;
 import com.bfd.note.util.Note;
 
 import jp.wasabeef.richeditor.RichEditor;

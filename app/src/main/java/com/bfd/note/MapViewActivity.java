@@ -1,8 +1,8 @@
 package com.bfd.note;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 
 import com.amap.api.maps.AMap;
 import com.amap.api.maps.MapView;
@@ -10,17 +10,13 @@ import com.amap.api.maps.model.BitmapDescriptorFactory;
 import com.amap.api.maps.model.LatLng;
 import com.amap.api.maps.model.Marker;
 import com.amap.api.maps.model.MarkerOptions;
+import com.bfd.note.map.NoteMarkerClickListener;
 import com.bfd.note.store.ContainerImpl;
 import com.bfd.note.util.Note;
 
 import java.util.List;
 
-
-import static com.bfd.note.EditorActivity.EDIT_CONTENT;
-import static com.bfd.note.EditorActivity.EDIT_ID;
-import static com.bfd.note.EditorActivity.IS_ADD;
-
-public class MapViewActivity extends Activity implements AMap.OnMarkerClickListener {
+public class MapViewActivity extends AppCompatActivity {
     private AMap aMap;
     private MapView mapView;
 
@@ -30,13 +26,17 @@ public class MapViewActivity extends Activity implements AMap.OnMarkerClickListe
         setContentView(R.layout.activity_map_view);
         mapView = (MapView) findViewById(R.id.map);
         mapView.onCreate(savedInstanceState); // 此方法必须重写
-        init();
+        updateMarker();
     }
 
-    private void init() {
+    private void updateMarker() {
         if (aMap == null) {
             aMap = mapView.getMap();
+            aMap.setOnMarkerClickListener(new NoteMarkerClickListener(this, aMap));
             addMarkersToMap();// 往地图上添加marker
+        } else {    // update marker info
+            aMap.clear();
+            addMarkersToMap();
         }
     }
 
@@ -67,13 +67,13 @@ public class MapViewActivity extends Activity implements AMap.OnMarkerClickListe
     private void addMarkersToMap() {
         List<Note> notes = ContainerImpl.getContainer().getAllNotes();
 
-        for(Note note : notes){
-            if(note.getLatitude() == 0.0 || note.getLongitude() == 0.0)
+        for (Note note : notes) {
+            if (note.getLatitude() == 0.0 && note.getLongitude() == 0.0)
                 continue; // no location information
 
             MarkerOptions markerOption = new MarkerOptions()
                     .icon(BitmapDescriptorFactory
-                    .defaultMarker(BitmapDescriptorFactory.HUE_AZURE))
+                            .defaultMarker(BitmapDescriptorFactory.HUE_AZURE))
                     .position(new LatLng(note.getLatitude(), note.getLongitude()))
                     .title(note.getTitle())
                     .snippet(note.getShortContent())
@@ -85,15 +85,15 @@ public class MapViewActivity extends Activity implements AMap.OnMarkerClickListe
     }
 
     @Override
-    public boolean onMarkerClick(final Marker marker) {
-        if (aMap != null) {
-            Note note = (Note)(marker.getObject());
-            Intent intent = new Intent(this, EditorActivity.class)
-                    .putExtra(EDIT_CONTENT, note.getContent())
-                    .putExtra(EDIT_ID, note.getId())
-                    .putExtra(IS_ADD, false);
-            startActivity(intent);
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode) {
+            case NoteMarkerClickListener.EDIT_RESULT:
+                if (resultCode == RESULT_OK) {
+                    updateMarker();
+                }
+            default:
+                    // nothing
         }
-        return true;
     }
 }

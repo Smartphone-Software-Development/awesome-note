@@ -1,4 +1,4 @@
-package com.bfd.note.util;
+package com.bfd.note.map;
 
 import android.content.Context;
 
@@ -6,9 +6,8 @@ import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationClient;
 import com.amap.api.location.AMapLocationClientOption;
 import com.amap.api.location.AMapLocationListener;
-import com.amap.api.maps.model.LatLng;
 
-public class GaodeMapLocation   {
+public class GaodeMapLocation {
     private AMapLocationClient locationClient = null;
     private AMapLocationClientOption locationOption = null;
     private Context context;
@@ -22,7 +21,7 @@ public class GaodeMapLocation   {
     private AMapLocationListener listener = new AMapLocationListener() {
         @Override
         public void onLocationChanged(AMapLocation amapLocation) {
-            if(amapLocation == null || amapLocation.getErrorCode() != 0){
+            if (amapLocation == null || amapLocation.getErrorCode() != 0) {
                 latitude = longitude = 0.0;
                 return;
             }
@@ -54,5 +53,12 @@ public class GaodeMapLocation   {
         return latitude;
     }
 
+    public void onClose() {
+        locationClient.onDestroy();
+    }
+
+    public void onStop() {
+        locationClient.stopLocation();
+    }
 
 }

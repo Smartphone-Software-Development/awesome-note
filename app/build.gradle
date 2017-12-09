@@ -41,6 +41,10 @@ dependencies {
     compile 'com.google.code.gson:gson:2.8.2'
     testCompile 'junit:junit:4.12'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
+
+    compile 'com.amap.api:3dmap:5.0.0'
+    compile 'com.amap.api:location:3.3.0'
+    compile 'com.amap.api:search:5.0.0'
 }
 buildscript {
     repositories {

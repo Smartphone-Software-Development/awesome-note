@@ -127,7 +127,6 @@ public class EditorActivity extends AppCompatActivity {
         mEditor.setOnTextChangeListener(new RichEditor.OnTextChangeListener() {
             @Override
             public void onTextChange(String text) {
-                // TODO:
             }
         });
 

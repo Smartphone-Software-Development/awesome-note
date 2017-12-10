@@ -54,29 +54,7 @@ public class MainActivity extends AppCompatActivity {
     private int mCurrentTransitionEffect = DEFAULT_TRANSITION_EFFECT;
     private Container container;
     private GridListAdapter listAdapter;
-    private final Handler uploadHandler = new Handler(){
-        @Override
-        public void handleMessage(Message msg) {
-            if (msg.what == 100) {
-                Toast.makeText(MainActivity.this, "上传成功", Toast.LENGTH_SHORT).show();
-            }
-            else {
-                Toast.makeText(MainActivity.this, "上传失败", Toast.LENGTH_SHORT).show();
-            }
-        }
-    };
-    private final Handler downloadHandler = new Handler() {
-        @Override
-        public void handleMessage(Message msg) {
-            // MARK: -stop waiting
-            if (msg.what == 100) {
-                Toast.makeText(MainActivity.this, "下载成功", Toast.LENGTH_SHORT).show();
-            }
-            else {
-                Toast.makeText(MainActivity.this, "下载失败", Toast.LENGTH_SHORT).show();
-            }
-        }
-    };
+    private static final Handler mHandler = new Handler();  // fetch result when upload or download
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,23 +68,27 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.sync_upload_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                MySynchronizer mysync = new MySynchronizer(getApplicationContext());
-                mysync.syncDataToCloud("user", "pwd", uploadHandler);
+                MySynchronizer mysync = new MySynchronizer(MainActivity.this);
+                mysync.syncDataToCloud("user", "pwd", mHandler);
             }
         });
 
         findViewById(R.id.sync_download_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                MySynchronizer mysync = new MySynchronizer(getApplicationContext());
+                Log.i(TAG, "onClick: click download button");
+                MySynchronizer mysync = new MySynchronizer(MainActivity.this);
                 ProgressDialog progressDialog = new ProgressDialog(MainActivity.this);
                 progressDialog.setTitle("Updating");
                 progressDialog.setMessage("Loading ...");
                 progressDialog.setCancelable(false);
                 progressDialog.show();
-                mysync.syncDataToCloud("user", "pwd", downloadHandler);
+                Log.i(TAG, "onClick: show progress dialog");
+                mysync.syncDataToLocal("user", "pwd", mHandler);
                 progressDialog.dismiss();
-
+                Log.i(TAG, "onClick: dismiss progress dialog");
+                updateListAdapter();
+                Log.i(TAG, "onClick: update list adapter");
             }
         });
 
@@ -120,6 +102,11 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         setToolBar();
+    }
+
+    private void updateListAdapter(){
+        listAdapter = new GridListAdapter(this, R.layout.grid_item, container);
+        mGrid.setAdapter(listAdapter);
     }
 
     private Container createConnection() {
@@ -190,11 +177,8 @@ public class MainActivity extends AppCompatActivity {
         // update list adapter
         Log.i(TAG, "onActivityResult: update container");
         if (resultCode == RESULT_OK) {
-            listAdapter = new GridListAdapter(this, R.layout.grid_item, container);
+            updateListAdapter();
         }
-
-        mGrid.setAdapter(listAdapter);
-
     }
 
     private class GridListAdapter extends ArrayAdapter<String> {

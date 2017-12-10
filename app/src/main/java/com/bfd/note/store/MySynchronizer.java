@@ -6,13 +6,16 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 import android.util.Log;
+import android.widget.Toast;
 
+import com.bfd.note.MainActivity;
 import com.bfd.note.util.Note;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import org.litepal.crud.DataSupport;
 
+import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.HashSet;
 import java.util.List;
@@ -47,9 +50,9 @@ public class MySynchronizer {
                 // update/create
                 String json = sp.getString(SP_KEY_NAME_UPDATE, "[]");
                 Log.i(TAG, "sync... update/create json = " + json);
-                HashSet<Long> idset =  gson.fromJson(json, type);
+                HashSet<Long> idset = gson.fromJson(json, type);
                 List<Note> notes = DataSupport.findAll(Note.class);
-                for (Note note: notes) {
+                for (Note note : notes) {
                     if (idset.contains(note.getId())) {
                         if (!sender.uploadNote(user_id, password, note)) {
                             success = false;
@@ -63,10 +66,15 @@ public class MySynchronizer {
                 if (success) {
                     editor.putString(SP_KEY_NAME_UPDATE, "[]");
                     editor.apply();
-                }
-                else {
+                } else {
                     // -1 means failed
                     handler.sendEmptyMessage(-1);
+                    handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(context, "上传失败", Toast.LENGTH_SHORT).show();
+                        }
+                    });
                     return;
                 }
 
@@ -75,8 +83,10 @@ public class MySynchronizer {
                 Log.i(TAG, "sync... delete json = " + json);
                 idset = gson.fromJson(json, type);
                 success = true;
-                for (Long id: idset) {
-                    if (!sender.deleteNote(user_id, password, id)) {
+                for (Long id : idset) {
+                    try {
+                        sender.deleteNote(user_id, password, id);
+                    } catch (IOException e) {
                         success = false;
                     }
                     Log.i(TAG, "delete " + id + " success? " + success);
@@ -85,12 +95,24 @@ public class MySynchronizer {
                 if (success) {
                     editor.putString(SP_KEY_NAME_DELETE, "[]");
                     editor.apply();
-                }
-                else {
+                } else {
                     handler.sendEmptyMessage(-1);
+                    handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(context, "上传失败", Toast.LENGTH_SHORT).show();
+                        }
+                    });
                 }
 
                 handler.sendEmptyMessage(100);
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(context, "上传成功", Toast.LENGTH_SHORT).show();
+                    }
+                });
+
             }
         }.start();
     }
@@ -100,15 +122,27 @@ public class MySynchronizer {
             @Override
             public void run() {
                 Log.i(TAG, "sync thread awake(download)");
-                List<Note> cloudNotes = sender.getAllNotes(user_id, password, 999);
+                List<Note> cloudNotes;
+                try {
+                    cloudNotes = sender.getAllNotes(user_id, password, 999);
+                } catch (IOException e) {   // error
+                    handler.sendEmptyMessage(-1);
+                    handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(context, "下载失败", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                    return;
+                }
 
                 List<Note> localNotes = DataSupport.findAll(Note.class);
                 HashSet<Long> localIdSet = new HashSet<>();
-                for (Note note: localNotes) {
+                for (Note note : localNotes) {
                     localIdSet.add(note.getId());
                 }
 
-                for (Note note: cloudNotes) {
+                for (Note note : cloudNotes) {
                     if (!localIdSet.contains(note.getId())) {
                         note.save();
                     }
@@ -116,8 +150,15 @@ public class MySynchronizer {
 
                 // what = 100 means 100% complete
                 handler.sendEmptyMessage(100);
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(context, "下载成功", Toast.LENGTH_SHORT).show();
+                    }
+                });
+
             }
-        };
+        }.start();
     }
 
     public void didDirtyNoteForId(Long note_id) {

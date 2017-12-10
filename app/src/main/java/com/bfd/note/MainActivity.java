@@ -2,6 +2,8 @@ package com.bfd.note;
 
 import android.content.Intent;
 import android.content.res.Resources;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.view.GravityCompat;
@@ -17,9 +19,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bfd.note.store.Container;
 import com.bfd.note.store.ContainerImpl;
+import com.bfd.note.store.MySynchronizer;
 import com.bfd.note.util.Note;
 import com.twotoasters.jazzylistview.JazzyGridView;
 import com.twotoasters.jazzylistview.JazzyHelper;
@@ -58,6 +62,45 @@ public class MainActivity extends AppCompatActivity {
         container = createConnection();
         listAdapter = new GridListAdapter(this, R.layout.grid_item, container);
         mGrid.setAdapter(listAdapter);
+
+        findViewById(R.id.sync_upload_button).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                MySynchronizer mysync = new MySynchronizer(getApplicationContext());
+                mysync.syncDataToCloud("user", "pwd", new Handler() {
+                    @Override
+                    public void handleMessage(Message msg) {
+                        if (msg.what == 100) {
+                            Toast.makeText(MainActivity.this, "上传成功", Toast.LENGTH_SHORT).show();
+                        }
+                        else {
+                            Toast.makeText(MainActivity.this, "上传失败", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+            }
+        });
+
+        findViewById(R.id.sync_download_button).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                MySynchronizer mysync = new MySynchronizer(getApplicationContext());
+                // MARK: -waiting here
+                mysync.syncDataToCloud("user", "pwd", new Handler() {
+                    @Override
+                    public void handleMessage(Message msg) {
+                        // MARK: -stop waiting
+                        if (msg.what == 100) {
+                            Toast.makeText(MainActivity.this, "下载成功", Toast.LENGTH_SHORT).show();
+                        }
+                        else {
+                            Toast.makeText(MainActivity.this, "下载失败", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+                // MARK: -refresh UI
+            }
+        });
 
         findViewById(R.id.add_button).setOnClickListener(new View.OnClickListener() {
             @Override

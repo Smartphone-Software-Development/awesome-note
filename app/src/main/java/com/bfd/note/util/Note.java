@@ -65,4 +65,9 @@ public class Note extends DataSupport {
     public double getLongitude() {
         return longitude;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        return o instanceof Note && ((Note) o).id.equals(id);
+    }
 }

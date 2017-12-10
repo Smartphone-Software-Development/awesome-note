@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import com.bfd.note.store.Container;
 import com.bfd.note.store.ContainerImpl;
+import com.bfd.note.store.MySynchronizer;
 import com.bfd.note.util.Note;
 
 import jp.wasabeef.richeditor.RichEditor;
@@ -60,6 +61,9 @@ public class EditorActivity extends AppCompatActivity {
         } else {
             container.resetNote(id, mEditor.getHtml());
         }
+        // MARK: -add dirty mark
+        MySynchronizer synchronizer = new MySynchronizer(getApplicationContext());
+        synchronizer.didDirtyNoteForId(id);
         Toast.makeText(this, "保存成功", Toast.LENGTH_SHORT).show();
     }
 
@@ -74,6 +78,9 @@ public class EditorActivity extends AppCompatActivity {
                 Intent intent = new Intent();
                 setResult(RESULT_OK, intent);
                 EditorActivity.this.finish();
+                // MARK: -add delete mark
+                MySynchronizer synchronizer = new MySynchronizer(getApplicationContext());
+                synchronizer.didDeleteNoteForId(id);
             }
         };
 

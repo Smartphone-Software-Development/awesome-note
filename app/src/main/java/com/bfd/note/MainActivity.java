@@ -1,5 +1,6 @@
 package com.bfd.note;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Handler;
@@ -53,6 +54,29 @@ public class MainActivity extends AppCompatActivity {
     private int mCurrentTransitionEffect = DEFAULT_TRANSITION_EFFECT;
     private Container container;
     private GridListAdapter listAdapter;
+    private final Handler uploadHandler = new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            if (msg.what == 100) {
+                Toast.makeText(MainActivity.this, "上传成功", Toast.LENGTH_SHORT).show();
+            }
+            else {
+                Toast.makeText(MainActivity.this, "上传失败", Toast.LENGTH_SHORT).show();
+            }
+        }
+    };
+    private final Handler downloadHandler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            // MARK: -stop waiting
+            if (msg.what == 100) {
+                Toast.makeText(MainActivity.this, "下载成功", Toast.LENGTH_SHORT).show();
+            }
+            else {
+                Toast.makeText(MainActivity.this, "下载失败", Toast.LENGTH_SHORT).show();
+            }
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,17 +91,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 MySynchronizer mysync = new MySynchronizer(getApplicationContext());
-                mysync.syncDataToCloud("user", "pwd", new Handler() {
-                    @Override
-                    public void handleMessage(Message msg) {
-                        if (msg.what == 100) {
-                            Toast.makeText(MainActivity.this, "上传成功", Toast.LENGTH_SHORT).show();
-                        }
-                        else {
-                            Toast.makeText(MainActivity.this, "上传失败", Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                });
+                mysync.syncDataToCloud("user", "pwd", uploadHandler);
             }
         });
 
@@ -85,20 +99,14 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 MySynchronizer mysync = new MySynchronizer(getApplicationContext());
-                // MARK: -waiting here
-                mysync.syncDataToCloud("user", "pwd", new Handler() {
-                    @Override
-                    public void handleMessage(Message msg) {
-                        // MARK: -stop waiting
-                        if (msg.what == 100) {
-                            Toast.makeText(MainActivity.this, "下载成功", Toast.LENGTH_SHORT).show();
-                        }
-                        else {
-                            Toast.makeText(MainActivity.this, "下载失败", Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                });
-                // MARK: -refresh UI
+                ProgressDialog progressDialog = new ProgressDialog(MainActivity.this);
+                progressDialog.setTitle("Updating");
+                progressDialog.setMessage("Loading ...");
+                progressDialog.setCancelable(false);
+                progressDialog.show();
+                mysync.syncDataToCloud("user", "pwd", downloadHandler);
+                progressDialog.dismiss();
+
             }
         });
 

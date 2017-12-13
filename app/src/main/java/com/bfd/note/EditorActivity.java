@@ -12,10 +12,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import com.bfd.note.map.GaodeMapLocation;
+import com.bfd.note.map.LocationDetector;
 import com.bfd.note.store.Container;
 import com.bfd.note.store.ContainerImpl;
 import com.bfd.note.store.MySynchronizer;
-import com.bfd.note.map.GaodeMapLocation;
 import com.bfd.note.util.Note;
 
 import jp.wasabeef.richeditor.RichEditor;
@@ -33,7 +34,7 @@ public class EditorActivity extends AppCompatActivity {
     private long id;
     private Container container;
     private boolean isAdd;
-    private GaodeMapLocation locationDetector = null;
+    private LocationDetector locationDetector = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

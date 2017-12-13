@@ -59,7 +59,8 @@ public class EditorActivity extends AppCompatActivity {
 
     private void onSaveNote() {
         if (isAdd) {
-            Note note = new Note(mEditor.getHtml());
+            Note note = new Note();
+            note.setContent(mEditor.getHtml());
             note.setLatitude(locationDetector.getLatitude());
             note.setLongitude(locationDetector.getLongitude());
             Log.i(TAG, "onSaveNote: latitude =" + note.getLatitude() + ", longitude = " + note.getLongitude());

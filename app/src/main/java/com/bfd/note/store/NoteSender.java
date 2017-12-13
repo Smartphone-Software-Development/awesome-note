@@ -124,7 +124,8 @@ public class NoteSender {
         NoteSender sender = new NoteSender();
 
         try {
-            Note note = new Note("<html> this is a note \"《家》 \' </html>");
+            Note note = new Note();
+            note.setContent("<html> this is a note \"《家》 \' </html>");
             note.setTitle("no title");
             note.setId(233L);
             boolean res = sender.uploadNote("123", "123", note);

@@ -14,10 +14,6 @@ public class Note extends DataSupport {
 
     private double latitude, longitude;
 
-    public Note(String content) {
-        this.content = content;
-    }
-
     public String getContent() {
         return content;
     }

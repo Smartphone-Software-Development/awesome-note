@@ -79,14 +79,4 @@ public class ContainerImplTest {
             return null;
         }
     };
-
-    @Test
-    public void queryIsCorrect() throws Exception{
-        Note testNote1 = new Note("hello");
-        Note testNote2 = new Note("world");
-
-
-
-
-    }
 }

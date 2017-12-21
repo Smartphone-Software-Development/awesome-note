@@ -42,3 +42,11 @@ private String title;
 private double latitude, longitude;
 ```
 
+### TODO
+
+- 编辑器插入本地图片
+- 很多界面的美化
+- 笔记根据标签分类
+- 位置确定算法（因为可能在一个地方创建又在很多其他地方编辑，而当前是只记录了创建位置）
+- 桌面插件的生成
+- a lot of todos

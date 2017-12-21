@@ -1,4 +1,4 @@
-package com.bfd.note.store;
+package com.bfd.note.network;
 
 import com.bfd.note.util.Note;
 import com.google.gson.Gson;
@@ -8,7 +8,6 @@ import okhttp3.*;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
-import java.security.spec.ECField;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;

@@ -16,7 +16,7 @@ import com.bfd.note.map.GaodeMapLocation;
 import com.bfd.note.map.LocationDetector;
 import com.bfd.note.store.Container;
 import com.bfd.note.store.ContainerImpl;
-import com.bfd.note.store.MySynchronizer;
+import com.bfd.note.network.MySynchronizer;
 import com.bfd.note.util.Note;
 
 import jp.wasabeef.richeditor.RichEditor;

@@ -1,14 +1,13 @@
-package com.bfd.note.store;
+package com.bfd.note.network;
 
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Handler;
-import android.os.Looper;
-import android.os.Message;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.bfd.note.MainActivity;
+import com.bfd.note.store.Container;
+import com.bfd.note.store.ContainerImpl;
 import com.bfd.note.util.Note;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
